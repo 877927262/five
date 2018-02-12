@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>人机大战之五子棋</title>
+	<link rel="stylesheet" href="./css/index.css">
+	<script src="./js/jquery-2.1.4.min.js"></script>
+	<script src="./js/index.js"></script>
+</head>
+<body>
+	<div>
+		<div id="container">
+			<div class="left">
+				<span>开始游戏</span>
+			</div>
+			<div class="right">
+				<ul>
+					<li>人</li>
+					<li>机</li>
+					<li>大</li>
+					<li>战</li>
+					<li>之</li>
+					<li>五</li>
+					<li>子</li>
+					<li>棋</li>
+				</ul>
+			</div>
+			<div class="sel" >
+				<form action="">
+					<span>玩家：</span> <br>
+					<span>玩家一：</span> 
+						<select name="wone" id="">
+							<option value="computer" selected>电脑</option>
+						</select>
+						<br>
+					<span>玩家二：</span> 
+						<input type="text" name="wtwo" placeholder="请输入昵称进行登录或选择游客登录" size="28">
+						<br><br><br>
+					<span>难易程度：</span> <br>
+					<label for="easy">
+						<span>简单：</span><input type="radio" id="easy" value="easy" name="nanyi"  checked>
+					</label>
+					<label for="middle">
+						<span>中等：</span><input type="radio" id="middle" value="middle" name="nanyi">
+					</label>
+					<label for="diff">
+						<span>难：</span><input type="radio" id="diff" value="diff" name="nanyi">
+					</label>
+					<br><br><br><br>
+					<span class="sg">开始游戏</span> 
+					<span class="back">返回</span>
+					<span class="yk">游客登录</span>
+				</form>
+			</div>
+		</div>
+
+		<audio id="audio" src="./music/5390.mp3"></audio>
+		<audio id="music" src="./music/高山流水.mp3" autoplay="autoplay"></audio>
+
+		<div id="contChess">
+			<canvas id="chess" width="450px" height="450px"></canvas>
+
+			<ul>
+				<li>悔棋</li>
+				<li>重新开始</li>
+				<li>退出</li>
+			</ul>
+
+			<div class="mess">
+				<p>
+					<span>玩家：</span>
+					<span class="name">terry</span>
+				</p>
+				<p>
+					<span>当前局数：</span>
+					<span class="nowc">51</span>
+				</p>
+				<p>
+					<span>总局数：</span>
+					<span class="total">50</span>
+				</p>
+				<p>
+					<span>获胜局数：</span>
+					<span class="winc">26/50</span>
+				</p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

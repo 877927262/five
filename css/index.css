@@ -1,0 +1,191 @@
+*{
+	padding: 0;
+	margin: 0;
+}
+/*开始界面*/
+#container{
+	height: 490px;
+	position: relative;
+	background-image: url("../image/08.png");
+	background-repeat: no-repeat;
+	background-size: cover;
+	/*border: 1px solid red;测试*/
+}
+#container .left{
+	float: left;
+	/*border: 1px solid blue;测试*/
+	/*display: none;*/
+}
+#container .left span{
+	display: inline-block;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 100%;
+	margin: auto;
+
+	width: 200px;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	font-family: "叶根友毛笔行书2.0版";
+    font-size: 30px;
+    font-weight: bold;
+	background-color: black;
+	color: white;
+	/*border: 1px solid yellow;测试*/
+	border-radius: 10px;
+	cursor: pointer;
+
+	animation: kaishi 1.3s ease 0s 1 normal;
+	animation-fill-mode: forwards;
+}
+#container .left span:active{
+	box-shadow: -2px -2px 2px #efefef,5px 5px 5px #898989;
+}
+#container .right{
+	position: absolute;
+	float: right;
+	top: 5px;
+	right: 200px;
+	/*border: 1px solid blue;测试*/
+
+	animation: piao 1.2s ease 0s 1 normal;
+	animation-fill-mode: forwards;
+}
+#container .right li{
+	list-style-type: none;
+	font-size: 45px;
+}
+#container .sel{
+	position: absolute;
+	clear: both;
+	display: none;
+	width: 410px;
+	height: 430px;
+	font-size: 20px;
+
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+	
+	background-image: url("../image/11.png");
+	border: 1px solid green;
+}
+.sel label[for=easy],.sel label[for=middle]{
+	display: inline-block;
+	margin-right: 65px;
+}
+.sel .sg{
+	position: absolute;
+	top: 260px;
+	left: 140px;
+	display: block;
+	cursor: pointer;
+	font-size: 25px;
+	color: blue;
+}
+.sel .back,.sel .yk{
+	position: absolute;
+	display: inline-block;
+	top: 380px;
+	cursor: pointer;
+}
+.sel .back{
+	margin-left: 15px;
+	color: green;
+}
+.sel .yk{
+	margin-left: 305px;
+	color: green;
+}
+.sel .sg:active,.sel .back:active,.sel .yk:active{
+	color: red;
+}
+.sel .sg:active{
+	font-size: 30px;
+}
+.sel .back:active,.sel .yk:active{
+	font-size: 25px;
+}
+/*棋盘界面*/
+#contChess{
+	position: relative;
+	height: 490px;
+	background-image: url("../image/woodfloor.jpg");
+	background-color: lightblue;
+	display: none;
+
+}
+#contChess canvas{
+    display: block;
+    box-shadow: -2px -2px 2px #efefef,5px 5px 5px #898989;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+}
+#contChess ul{
+	position: absolute;
+	height: 120px;
+    top: 35%;
+    right: 110px;
+}
+#contChess ul li{
+	list-style-type: none;
+	height: 40px;
+	line-height: 40px;
+    text-align: center;
+    padding-left: 40px;
+    padding-right: 40px;
+    color: #fff;
+    font-size: 20px;
+	font-weight: bold;
+    border-radius: 18px;
+    margin-bottom: 10px;
+    border: 1px solid #c27426;
+    text-shadow: 0 1px 1px #444444;
+    box-shadow: 0px 1px 4px rgba(0,0,0,.3);
+    background-image: linear-gradient( #D57F29,#AE6822 );
+    cursor: pointer;
+}
+#contChess .mess{
+	position: absolute;
+	left: 35px;
+	top: 30%;
+	height: 160px;
+}
+#contChess .mess p{
+	font-size: 20px;
+	font-weight: bold;
+	color: #fff;
+	margin-bottom: 15px;
+}
+
+
+
+/*动画*/
+/*让“开始游戏”从下向上出现*/
+@keyframes kaishi{
+	0%{
+		top: 100%;
+	}
+	100%{
+		top: 50%;
+	}
+}
+/*让“人机大战之五子棋”从右向左在x和y轴构成的平面旋转出现*/
+@keyframes piao{
+	0%{
+		transform: scale(0.1,0.1) rotate(0deg);
+		right: -300px;
+	}
+	100%{
+		transform: scale(1,1) rotate(360deg);
+		right: 200px;
+	}
+}
