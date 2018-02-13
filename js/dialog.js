@@ -1,16 +1,3 @@
-/*
-author: Claire Wu 20160410 
-mail: hzwufenfen@corp.netease.com
-desc: this is a module for a temp dialog 
-all params below is optional
-params: title          string    the title 
-params: content        string    the content that shows
-params: okBtnTxt       string    the text shows on the ok button
-params: okBtnFunc      function  function binded to the ok button
-params: isShowCancel   boolean   if show the cancel button
-params: cancelBtnTxt   string    the text shows on the cancel button
-params: cancelBtnFunc  function  function binded to the cancel button
- */
 function Dialog() {
     var dialogFrame = document.createElement('div');
     dialogFrame.className = "background";
@@ -48,31 +35,31 @@ function Dialog() {
             cancelBtn.innerText = options.cancelBtnTxt;
         }
         if (!options.isShowCancel){
-            cancelBtn.style.display = 'none';          
-        } 
+            cancelBtn.style.display = 'none';
+        }
 
         if(options.okBtnFunc && typeof options.okBtnFunc =="function"){
             okBtn.addEventListener('click', function() {
-                document.body.removeChild(dialog); 
+                document.body.removeChild(dialog);
                 options.okBtnFunc();
             });
         }
         else{
             okBtn.addEventListener('click', function() {
-                document.body.removeChild(dialog); 
+                document.body.removeChild(dialog);
             });
         }
-         
+
         if(options.cancelBtnFunc && typeof options.cancelBtnFunc =="function"){
             cancelBtn.addEventListener('click', function() {
-                document.body.removeChild(dialog); 
+                document.body.removeChild(dialog);
                 options.cancelBtnFunc();
             });
         }
         else{
             cancelBtn.addEventListener('click', function() {
-                document.body.removeChild(dialog); 
+                document.body.removeChild(dialog);
             });
-        }  
+        }
     }
 }
