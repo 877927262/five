@@ -24,9 +24,277 @@ $(function(){
 
 		//根据用户的选择进行绘制棋盘和选择算法
 		if(nanyi === 'easy'){
-			
-		} else if(nanyi === 'middle'){
+      // 简单难度代码
+			var chessBoard = [];
+	var me = true;
+	var over = false;
 
+	var wins = [];
+	var myWin = [];
+	var computerWin = [];
+
+
+	//5.初始化棋盘的每一个交叉点值为0
+	for(var i=0;i<15;i++){
+		chessBoard[i] = [];
+		for(var j=0;j<15;j++){
+			chessBoard[i][j] = 0;
+		}
+	}
+
+	//7.定义一个嬴法数组
+	for(var i=0;i<15;i++){
+		wins[i] = [];
+		for(var j=0;j<15;j++){
+			wins[i][j] = [];
+		}
+	}
+	var count = 0;  //嬴法种类的索引,即第几种嬴法
+	//所有横线嬴法
+	for(var i=0;i<15;i++){
+		for(var j=0;j<11;j++){
+			for(var k=0;k<5;k++){
+				wins[i][j+k][count] = true;
+			}
+			count++;
+		}
+	}
+	//所有竖线嬴法
+	for(var i=0;i<15;i++){
+		for(var j=0;j<11;j++){
+			for(var k=0;k<5;k++){
+				wins[j+k][i][count] = true;
+			}
+			count++;
+		}
+	}
+	//所有斜线嬴法
+	for(var i=0;i<11;i++){
+		for(var j=0;j<11;j++){
+			for(var k=0;k<5;k++){
+				wins[i+k][j+k][count] = true;
+			}
+			count++;
+		}
+	}
+	//所有反斜线嬴法
+	for(var i=0;i<11;i++){
+		for(var j=14;j>3;j--){
+			for(var k=0;k<5;k++){
+				wins[i+k][j-k][count] = true;
+			}
+			count++;
+		}
+	}
+	// console.log(count);  //print:572(在15*15棋盘上共有572种嬴法)
+
+	//8.定义嬴法的统计数组
+	for(var i=0;i<count;i++){
+		myWin[i] = 0;
+		computerWin[i] = 0;
+	}
+
+	//获取棋盘所在的画布2d上下文
+	var chess=document.getElementById("chess");
+	var context=chess.getContext('2d');
+
+	//2.绘制水印
+	// var logo = new Image();  //image有一个onload方法，当图片加载完毕以后才去绘制水印
+	// // logo.src = "images/logo.png";
+	// logo.src = "images/logo3.jpg";
+	// logo.onload = function(){  //此方法是异步执行的,所以为了不让水印压住棋盘线，需要先绘制水印再绘制棋盘线
+	// 	context.drawImage(logo,0,0,450,450);
+	// 	drawChessBoard();
+	// }
+
+	//1.绘制棋盘
+	//整个canvas画布是450px*450px，一共15条线(即14个格,每个格子30px，两边留白各15px)
+	context.strokeStyle="#BFBFBF"; //设置棋盘线的样式(颜色)
+	var drawChessBoard = function(){
+		for(var i=0;i<15;i++){
+		    context.moveTo(15 + i*30, 15);
+		    context.lineTo(15 + i*30, 435);
+		    context.stroke();
+		    context.moveTo(15 , 15 + i*30);
+		    context.lineTo(435 ,15 + i*30);
+		    context.stroke();
+		}
+	}
+	drawChessBoard();
+	alert("请玩家持黑子先行");
+
+	//3.绘制棋子
+	var oneStep = function(i,j,me){  //i,j是索引；me是黑棋/白棋
+		context.beginPath();
+		context.arc(15 + i*30,15 + j*30,13,0,2*Math.PI);
+		context.closePath();
+		var gradient = context.createRadialGradient(15 + i*30 + 2, 15 + j*30 - 2,13, 15 + i*30 + 2, 15 + j*30 - 2,0); //实现渐变
+		if(me){ //如果是黑棋
+			gradient.addColorStop(0,"#0A0A0A"); //0所对应的是圆心为200,200，半径是50的圆；并为该圆设置颜色
+			gradient.addColorStop(1,"#636766"); //1所对应的是圆心为200,200，半径是20的圆；并为该圆设置颜色
+		}else{ //如果是白棋
+			gradient.addColorStop(0,"#D1D1D1");
+			gradient.addColorStop(1,"#F9F9F9");
+		}
+		context.fillStyle = gradient;
+		context.fill();
+	}
+
+
+	//4.当鼠标点击时，调用oneStep函数实现落子
+	chess.onclick = function(e){
+		if(over){ //如果已经结束了直接return
+			return;
+		}
+		if(!me){
+			return;
+		}
+		var x = e.offsetX;  //offsetX,offsetY是相对于canvas的0,0点来计算的坐标
+		var y = e.offsetY;
+		var i = Math.floor(x/30);  //floor，向下取整
+		var j = Math.floor(y/30);
+		if(chessBoard[i][j] == 0){ //如果被点击的地方没有棋子，才允许落子
+			oneStep(i,j,me);
+			chessBoard[i][j] = 1;//如果落子的位置是黑棋，则设置他的值为1；白棋值为2
+
+			for(var k=0;k<count;k++){
+				if(wins[i][j][k]){
+					myWin[k]++;
+					computerWin[k] = 6;
+					if(myWin[k] == 5){
+						window.alert("你赢了");
+						over = true;
+
+						// alert("测试开始");
+						if(confirm("再来一局")){
+							location.reload();
+						}else{
+							location.href="./index.html";
+						}
+					}
+				}
+			}
+
+			if(!over){ //如果没有结束，调用函数computerAI
+				me = !me; //如果没有结束就将下棋的权利交给计算机
+				computerAI();
+			}
+		}
+	}
+
+	//实现计算机自动落子
+	var computerAI = function(){
+		var myScore = [];
+		var computerScore = [];
+		var max = 0;
+		var u = 0, v = 0;
+		for(var i=0;i<15;i++){
+			myScore[i] = [];
+			computerScore[i] = [];
+			for(var j=0;j<15;j++){
+				myScore[i][j] = 0;
+				computerScore[i][j] = 0;
+			}
+		}
+		//遍历整个棋盘
+		for(var i=0;i<15;i++){
+			for(var j=0;j<15;j++){
+				if(chessBoard[i][j] == 0){ //如果棋盘的某个交叉点没有落子
+					for(var k=0;k<count;k++){
+						if(wins[i][j][k]){
+							if(myWin[k] == 1){
+								myScore[i][j] += 200;
+							}else if(myWin[k] == 2){
+								myScore[i][j] += 400;
+							}else if(myWin[k] == 3){
+								myScore[i][j] += 2000;
+							}else if(myWin[k] == 4){
+								myScore[i][j] += 10000;
+							}
+
+							if(computerWin[k] == 1){
+								computerScore[i][j] += 220;
+							}else if(computerWin[k] == 2){
+								computerScore[i][j] += 420;
+							}else if(computerWin[k] == 3){
+								computerScore[i][j] += 2100;
+							}else if(computerWin[k] == 4){
+								computerScore[i][j] += 20000;
+							}
+						}
+					}
+					if(myScore[i][j] > max){
+						max = myScore[i][j];
+						u = i;
+						v = j;
+					}else if(myScore[i][j] = max){
+						if(computerScore[i][j] > computerScore[u][v]){
+							u = i;
+							v = j;
+						}
+					}
+
+					if(computerScore[i][j] > max){
+						max = computerScore[i][j];
+						u = i;
+						v = j;
+					}else if(computerScore[i][j] = max){
+						if(myScore[i][j] > myScore[u][v]){
+							u = i;
+							v = j;
+						}
+					}
+				}
+			}
+		}
+		//计算机落子
+		oneStep(u,v,false);
+		chessBoard[u][v] = 2;
+		//更新嬴法统计数组
+		for(var k=0;k<count;k++){
+			if(wins[u][v][k]){
+				computerWin[k]++;
+				myWin[k] = 6;
+				if(computerWin[k] == 5){
+					window.alert("计算机赢了");
+					over = true;
+
+					// alert("测试开始");
+					if(confirm("再来一局")){
+						location.reload();
+					}else{
+						location.href="./index.html";
+					}
+
+				}
+			}
+		}
+
+		if(!over){ //如果没有结束，调用函数computerAI
+			me = !me; //如果没有结束就将下棋的权利交给计算机
+		}
+	}
+
+	//6.鼠标变换为手型
+	chess.onmousemove = function(e){
+		chess.style.cursor = "default";
+		var x = e.offsetX;
+		var y = e.offsetY;
+		for(var i=0;i<15;i++){
+			for(var j=0;j<15;j++){
+				var a = x-(15+i*30);
+				var b = y-(15+j*30);
+				var distance=Math.hypot(a,b);
+				var chessRange=Math.sqrt(50,2);
+				if(distance < chessRange){
+					chess.style.cursor = "pointer";
+				}
+			}
+		}
+	}
+
+		} else if(nanyi === 'middle'){
+      // 中级难度代码
 					var chess = document.getElementById('chess');
 					var reset = document.getElementById("reset");
 					// var logo = new Image();
