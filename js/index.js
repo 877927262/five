@@ -27,8 +27,8 @@ $(function(){
 
 				var chess = document.getElementById('chess');
 				var reset = document.getElementById("reset");
-				var logo = new Image();
-				logo.src = 'image/logo.jpg';
+				// var logo = new Image();
+				// logo.src = 'image/logo.jpg';
 				var context;
 				var me; //谁先下
 				var isAvailable; //记录棋子是否已经下过了
@@ -51,7 +51,7 @@ $(function(){
 
 					context = chess.getContext('2d');
 					context.clearRect(0,0,450,450);
-					context.drawImage(logo,0,0,450,450);
+					// context.drawImage(logo,0,0,450,450);
 					drawChessBoard(); //绘制棋盘
 					for(var i=0; i<15; i++){
 						isAvailable[i] = new Array(15);
